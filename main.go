@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sync"
 	"time"
 )
 
@@ -26,7 +27,18 @@ func main() {
 		{TableNumber: 5, PrepTime: 4 * time.Second},
 	}
 
+	wg := sync.WaitGroup{}
+
 	for _, order := range orders {
-		processOrder(order)
+		wg.Add(1)
+
+		go func() {
+			defer wg.Done()
+			processOrder(order)
+		}()
 	}
+
+	wg.Wait()
+
+	fmt.Println("All orders done")
 }
