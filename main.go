@@ -1,7 +1,32 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
+
+type Order struct {
+	TableNumber int
+	PrepTime    time.Duration
+}
+
+func processOrder(order Order) {
+	fmt.Printf("Preparing order for table %d\n", order.TableNumber)
+	time.Sleep(order.PrepTime)
+	fmt.Printf("Order ready for table %d\n\n", order.TableNumber)
+	time.Sleep(time.Second)
+}
 
 func main() {
-	fmt.Println("Hello world")
+	orders := []Order{
+		{TableNumber: 1, PrepTime: 2 * time.Second},
+		{TableNumber: 2, PrepTime: 3 * time.Second},
+		{TableNumber: 3, PrepTime: 1 * time.Second},
+		{TableNumber: 4, PrepTime: 2 * time.Second},
+		{TableNumber: 5, PrepTime: 4 * time.Second},
+	}
+
+	for _, order := range orders {
+		processOrder(order)
+	}
 }
